@@ -18,31 +18,79 @@
 }
 
 .displaySection {
-    margin: 5%;
-    width : 80%; 
-    height : 20%;
+    width : 90%; 
+    height : 25%;
     background-color: white;
 
 }
 
-.numberSection {
-    width: 80%; 
-    height: 60%; 
-    margin: 5%;
-    background-color: white; 
+.featureSection {
+    width: 90%; 
+    height: 65%; 
     display: flex; 
+    flex-direction: row;
 }
 
-.numberGrids {
+.numberSection,
+.operatorSection {
+    display:flex;
+    flex-direction: column;
+}
+
+.operatorSection {
+    width: 20%;
+    background-color: orange;
+}
+
+.numberSection {
+    width: 80%;
+    background-color: aliceblue;
+}
+
+.numberSectionUpper {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    background-color: beige;
+}
+
+.numberSectionMain {
+    width: 100%; 
+    height: 80%;
+}
+
+.numContainer {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100%;
+    flex-direction: row;
+}
+.numContainer>* {
+    flex: 1 1 80px;
+}
+
+
+
+.numberGrids, 
+.test {
     border-style: solid;
     border-color: black;
-    width: 10%;
-    height: 10%;
+    box-sizing: border-box;
+    border-width: 1px;
     font-family: monospace;
     font-size: 20px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
+
+.numberGrids {
+    width: 100%;
+    height: 100%;
+}
+
+
 
 </style>
 
@@ -52,7 +100,17 @@
     <div>
         <div class = "outerCalcu">
             <div class = "displaySection"></div>
-            <div class = "numberSection"></div>
+            <div class = "featureSection">
+                <div class = "numberSection">
+                    <div class = "numberSectionUpper"></div>
+                    <div class = "numberSectionMain">
+                        <div class = "numContainer"></div>
+                    </div>
+                </div>
+                <div class = "operatorSection"></div>
+            </div>
+                
+
         </div>
     </div>
 </body>

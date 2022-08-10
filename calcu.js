@@ -1,4 +1,4 @@
-// operations 
+// individual operation functions
 
 function addNum(a, b) {
     return a + b;
@@ -22,7 +22,7 @@ function operate() {
     const operation = prompt("Operator: ");
     const num1 = parseInt(prompt("a: "));
     const num2 = parseInt(prompt("b: "));
-    
+
     switch(operation){
         case "+": 
             alert(addNum(num1,num2));
@@ -38,38 +38,63 @@ function operate() {
     }
 }
 
-// make number grids 
+//make grids: 
+//1. selectors: 
 
+const featureSection = document.querySelector(".featureSection");
 const numberSection = document.querySelector(".numberSection");
+const numberSectionUpper = document.querySelector(".numberSectionUpper");
+const numberSectionMain = document.querySelector(".numberSectionMain");
+const operatorSection = document.querySelector(".operatorSection");
+const numContainer = document.querySelector(".numContainer");
+
+//2. functions to make grids
+
+function makeGrids(section, classList, identities) {
+    const grids = document.createElement("div"); 
+    section.appendChild(grids);
+    grids.classList.add(classList);
+    let idContent = identities[i];
+    grids.setAttribute("id", `${idContent}`)
+    grids.textContent = `${idContent}`;
+};
+
+const operators = ["+", "-", "/", "x", "="];
+const additionalFeatures = ["C", "+/-", "%"];
+const numbers = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, "."];
+
 
 function makeOperationGrids() {
-    for (i = 1; i <= 5; i++) {
-        const operationGrids = document.createElement("div"); 
-        numberSection.appendChild(numberGrids);
-        numberGrids.classList.add("numberGrids");
-        numberGrids.setAttribute("id", `${i}`)
-        numberGrids.textContent = `${i}`;
+    for (i = 0; i <= 4; i++) {
+        makeGrids(operatorSection, "numberGrids", operators);
     }
+};
+
+function makeNumGridsUpper() {
+    for (i=0; i<=2; i++) {
+        makeGrids(numberSectionUpper, "numberGrids", additionalFeatures);
+    }
+};
+
+function makeNumGridsMain() {
+    for (i = 0; i <= 10; i++) {
+        makeGrids(numContainer, "test", numbers); 
+    }
+};
+
+//3. to call all grid functions: 
+function makeAllGrids() {
+    makeOperationGrids();
+    makeNumGridsUpper();
+    makeNumGridsMain();
 }
 
-function makeNumberGrids() {
-    //make array with operations
-    for (i = 1; i <= 9; i++) {
-        const numberGrids = document.createElement("div"); 
-        numberSection.appendChild(numberGrids);
-        numberGrids.classList.add("numberGrids");
-        numberGrids.setAttribute("id", `${i}`)
-        numberGrids.textContent = `${i}`;
-    }
+//function to start calc:
+function startCalc() {
+    makeAllGrids(); 
 }
 
-makeOperationGrids();
-makeNumberGrids();
 
+//initializer
+startCalc();
 
-
-
-
-
-
-//operate();
