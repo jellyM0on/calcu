@@ -51,7 +51,7 @@ const numContainer = document.querySelector(".numContainer");
 //2. functions to make grids
 
 function makeGrids(section, classList, identities) {
-    const grids = document.createElement("div"); 
+    const grids = document.createElement("button"); 
     section.appendChild(grids);
     grids.classList.add(classList);
     let idContent = identities[i];
@@ -78,9 +78,12 @@ function makeNumGridsUpper() {
 
 function makeNumGridsMain() {
     for (i = 0; i <= 10; i++) {
-        makeGrids(numContainer, "test", numbers); 
+        makeGrids(numContainer, "mainNumGrids", numbers); 
     }
+    
 };
+
+
 
 //3. to call all grid functions: 
 function makeAllGrids() {
@@ -89,9 +92,31 @@ function makeAllGrids() {
     makeNumGridsMain();
 }
 
+
+//to display numbers in display section: 
+
+const displaySection = document.querySelector(".displaySection");
+let displayValue; 
+
+function displayNum() {
+    const defaultValue = [];
+    const numButtons = document.querySelectorAll(".mainNumGrids"); 
+    numButtons.forEach((button) => 
+    button.addEventListener("click", () => {
+    let displayedNum = button.getAttribute("id"); 
+    defaultValue.push(displayedNum);
+    let newValue =  defaultValue.join("");
+    displaySection.textContent = newValue;
+    displayValue = newValue;
+}));
+}
+
+
+
 //function to start calc:
 function startCalc() {
     makeAllGrids(); 
+    displayNum();
 }
 
 
