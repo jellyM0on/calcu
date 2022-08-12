@@ -147,6 +147,12 @@ function inputNum(num) {
     calculator.displayValue = displayValue === "0" ? num : displayValue + num;
 }
 
+function inputDec(point) {
+    if (!calculator.displayValue.includes(point)) {
+        calculator.displayValue += point;
+    }
+}
+
 
 //function to start calc:
 function startCalc() {
@@ -161,7 +167,9 @@ testing.forEach((test) => {
     test.addEventListener("click", (event) => {
     const { target } = event; 
     if (target.id == ".") {
-        return;
+        inputDec(target.id); 
+        displayNum(); 
+        return; 
     }
     inputNum(target.id);
     displayNum(); 
