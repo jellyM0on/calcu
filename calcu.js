@@ -18,21 +18,18 @@ function divideNum(a, b) {
 
 // operate
 
-function operate(operation, num1, num2) {
+function operate(num1, num2, operation) {
     switch(operation){
         case "add": 
-            alert(addNum(num1,num2));
-            break;
+            return addNum(num1 + num2); 
         case "sub":
-            subtractNum(num1,num2); 
-            break;
-        case "multi": 
-            timesNum(num1,num2); 
-            break; 
+            return subtractNum(num1,num2); 
+        case "times": 
+            return timesNum(num1,num2); 
         case "divi": 
-            divideNum(num1,num2); 
-            break; 
+            return divideNum(num1,num2); 
     }
+    return num2;
 }
 
 //make grids: 
@@ -90,45 +87,7 @@ function makeAllGrids() {
     makeNumGridsMain();
 }
 
-
-
-
-
-
-//taking input values
-// let givenNums = [0]; 
-// let takeNums = [];
-
-// let newValue; 
-// function inputNum() {
-//     const defaultValue = [];
-//     const numButtons = document.querySelectorAll(".mainNumGrids"); 
-
-//     numButtons.forEach((button) => 
-//     button.addEventListener("click", () => {
-//     let displayedNum = button.getAttribute("id"); 
-//     defaultValue.push(displayedNum);
-//     newValue =  parseInt(defaultValue.join(""));
-//     displayValue = newValue;
-//     displaySection.textContent = displayValue;
-// }));
-//     givenNums.push(parseInt(newValue)); 
-//     takeNums.push(givenNums[(givenNums.length) - 1]);
-// };
-
-
-
-// let givenOp; 
-// function inputOp() {
-//     const opButtons = document.querySelectorAll(".opGrids"); 
-//     opButtons.forEach((button) =>
-//     button.addEventListener("click", () => { 
-//     let opID = button.getAttribute("id"); 
-//     givenOp = opID;
-//     inputNum(); 
-
-//     }))
-// }; 
+//
 
 const calculator = {
     displayValue: "0", 
@@ -143,8 +102,13 @@ function displayNum() {
 }
 
 function inputNum(num) {
-    const { displayValue } = calculator; 
+    const { displayValue, waitingForSecondOp } = calculator; 
+    if (waitingForSecondOp === true) {
+        calculator.displayValue = num; 
+        calculator.waitingForSecondOp = false; 
+    } else {
     calculator.displayValue = displayValue === "0" ? num : displayValue + num;
+    }
 }
 
 function inputDec(point) {
@@ -153,6 +117,20 @@ function inputDec(point) {
     }
 }
 
+function handleOp(nextOp) {
+    const { firstOp, displayValue, operator } = calculator;
+    const inputValue = parseFloat(displayValue); 
+    if (firstOp == null && !isNaN(inputValue)) {
+        calculator.firstOp = inputValue; 
+    } else if (operator) {
+        const result = operate(firstOp, inputValue, operator);
+        calculator.displayValue = String(result); 
+        calculator.firstOp = result; 
+    }
+    calculator.waitingForSecondOp = true; 
+    calculator.operator = nextOp; 
+    console.log(calculator);
+}
 
 //function to start calc:
 function startCalc() {
@@ -162,18 +140,33 @@ function startCalc() {
 //initializer
 startCalc();
  
-const testing = document.querySelectorAll(".mainNumGrids");
-testing.forEach((test) => { 
-    test.addEventListener("click", (event) => {
+const numButtons = document.querySelectorAll("button");
+numButtons.forEach((button) => { 
+    button.addEventListener("click", (event) => {
     const { target } = event; 
     if (target.id == ".") {
         inputDec(target.id); 
         displayNum(); 
         return; 
     }
+    if (target.classList.contains("opGrids")) {
+        handleOp(target.id); 
+        displayNum(); 
+        return;
+    }
     inputNum(target.id);
     displayNum(); 
-})}); 
+    })
+}); 
+
+// const opButtons = document.querySelectorAll(".opGrids");
+// opButtons.forEach((button) => {
+//     button.addEventListener("click", (event) => {
+//     const { target } = event; 
+//     handleOp(target.id); 
+//     displayNum(); 
+//     })
+// });
 
 
 // const opButton = document.querySelector("#equals"); 
