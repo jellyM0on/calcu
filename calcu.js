@@ -18,23 +18,20 @@ function divideNum(a, b) {
 
 // operate
 
-function operate() {
-    const operation = prompt("Operator: ");
-    const num1 = parseInt(prompt("a: "));
-    const num2 = parseInt(prompt("b: "));
-
+function operate(operation, num1, num2) {
     switch(operation){
-        case "+": 
+        case "add": 
             alert(addNum(num1,num2));
-        case "-":
+            break;
+        case "sub":
             subtractNum(num1,num2); 
-        case "x": 
+            break;
+        case "multi": 
             timesNum(num1,num2); 
-        case "/": 
+            break; 
+        case "divi": 
             divideNum(num1,num2); 
             break; 
-        default: 
-            alert("Enter valid operator"); 
     }
 }
 
@@ -50,40 +47,41 @@ const numContainer = document.querySelector(".numContainer");
 
 //2. functions to make grids
 
-function makeGrids(section, classList, identities) {
+function makeGrids(section, classList, identities, content) {
     const grids = document.createElement("button"); 
     section.appendChild(grids);
     grids.classList.add(classList);
-    let idContent = identities[i];
-    grids.setAttribute("id", `${idContent}`)
-    grids.textContent = `${idContent}`;
+    let gridContent = content[i];
+    let gridID = identities[i]; 
+    grids.setAttribute("id", `${gridID}`)
+    grids.textContent = `${gridContent}`;
 };
 
-const operators = ["+", "-", "/", "x", "="];
+const operators = ["+", "-", "x", "/", "="];
+const operatorID = ["add", "sub", "times", "divi", "equals"]; 
 const additionalFeatures = ["C", "+/-", "%"];
+const addFeatID = ["clear", "sign", "percent"]; 
 const numbers = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, "."];
 
 
 function makeOperationGrids() {
     for (i = 0; i <= 4; i++) {
-        makeGrids(operatorSection, "numberGrids", operators);
+        makeGrids(operatorSection, "opGrids", operatorID, operators);
     }
 };
 
 function makeNumGridsUpper() {
     for (i=0; i<=2; i++) {
-        makeGrids(numberSectionUpper, "numberGrids", additionalFeatures);
+        makeGrids(numberSectionUpper, "numberGrids", addFeatID, additionalFeatures);
     }
 };
 
 function makeNumGridsMain() {
     for (i = 0; i <= 10; i++) {
-        makeGrids(numContainer, "mainNumGrids", numbers); 
+        makeGrids(numContainer, "mainNumGrids", numbers, numbers); 
     }
     
 };
-
-
 
 //3. to call all grid functions: 
 function makeAllGrids() {
@@ -93,24 +91,56 @@ function makeAllGrids() {
 }
 
 
-//to display numbers in display section: 
 
-const displaySection = document.querySelector(".displaySection");
-let displayValue; 
 
-function displayNum() {
-    const defaultValue = [];
-    const numButtons = document.querySelectorAll(".mainNumGrids"); 
-    numButtons.forEach((button) => 
-    button.addEventListener("click", () => {
-    let displayedNum = button.getAttribute("id"); 
-    defaultValue.push(displayedNum);
-    let newValue =  defaultValue.join("");
-    displaySection.textContent = newValue;
-    displayValue = newValue;
-}));
+
+
+//taking input values
+// let givenNums = [0]; 
+// let takeNums = [];
+
+// let newValue; 
+// function inputNum() {
+//     const defaultValue = [];
+//     const numButtons = document.querySelectorAll(".mainNumGrids"); 
+
+//     numButtons.forEach((button) => 
+//     button.addEventListener("click", () => {
+//     let displayedNum = button.getAttribute("id"); 
+//     defaultValue.push(displayedNum);
+//     newValue =  parseInt(defaultValue.join(""));
+//     displayValue = newValue;
+//     displaySection.textContent = displayValue;
+// }));
+//     givenNums.push(parseInt(newValue)); 
+//     takeNums.push(givenNums[(givenNums.length) - 1]);
+// };
+
+
+
+// let givenOp; 
+// function inputOp() {
+//     const opButtons = document.querySelectorAll(".opGrids"); 
+//     opButtons.forEach((button) =>
+//     button.addEventListener("click", () => { 
+//     let opID = button.getAttribute("id"); 
+//     givenOp = opID;
+//     inputNum(); 
+
+//     }))
+// }; 
+
+const calculator = {
+    displayValue: "0", 
+    firstOp: null, 
+    waitingForSecondOp: false, 
+    operator: null, 
 }
 
+function displayNum() {
+    const display = document.querySelector(".display");
+    display.value = calculator.displayValue;
+}
 
 
 //function to start calc:
@@ -122,4 +152,8 @@ function startCalc() {
 
 //initializer
 startCalc();
+
+// const opButton = document.querySelector("#equals"); 
+// opButton.addEventListener("click", () => { operate()})
+
 
