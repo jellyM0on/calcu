@@ -142,16 +142,31 @@ function displayNum() {
     display.value = calculator.displayValue;
 }
 
+function inputNum(num) {
+    const { displayValue } = calculator; 
+    calculator.displayValue = displayValue === "0" ? num : displayValue + num;
+}
+
 
 //function to start calc:
 function startCalc() {
     makeAllGrids(); 
-    displayNum();
 }
-
 
 //initializer
 startCalc();
+ 
+const testing = document.querySelectorAll(".mainNumGrids");
+testing.forEach((test) => { 
+    test.addEventListener("click", (event) => {
+    const { target } = event; 
+    if (target.id == ".") {
+        return;
+    }
+    inputNum(target.id);
+    displayNum(); 
+})}); 
+
 
 // const opButton = document.querySelector("#equals"); 
 // opButton.addEventListener("click", () => { operate()})
