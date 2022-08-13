@@ -120,6 +120,18 @@ function inputDec(point) {
     }
 }
 
+function inputPercent() {
+    calculator.displayValue = calculator.displayValue/100; 
+}
+
+function changeSign() {
+    if (calculator.displayValue > 0) {
+        calculator.displayValue = -calculator.displayValue;
+    } else {
+        calculator.displayValue *= -1;
+    }
+}
+
 function handleOp(nextOp) {
     const { firstOp, displayValue, operator } = calculator;
     const inputValue = parseFloat(displayValue); 
@@ -172,9 +184,16 @@ numButtons.forEach((button) => {
             displayNum();
             return;
         }
-        //if (target.id == "percent") {
-
-        //}
+        if (target.id == "percent") {
+            inputPercent(); 
+            displayNum();
+            return;
+        }
+        if (target.id == "sign") {
+            changeSign();
+            displayNum();
+            return;
+        }
         inputNum(target.id);
         displayNum(); 
         });
@@ -228,7 +247,6 @@ window.addEventListener("keydown", (event) => {
             break;
       };
 });
-
 
 function keyFunctions(num) {
     inputNum(String(num));
