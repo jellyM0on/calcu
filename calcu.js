@@ -207,10 +207,10 @@ window.addEventListener("keydown", (event) => {
             displayNum();
         } else {
         let arrayNum = String(calculator.displayValue).split("");
-        arrayNum.pop(); 
-        const stringNum = arrayNum.join(""); 
-        calculator.displayValue = `${parseFloat(stringNum)}`;
-        calculator.firstOp = `${parseFloat(stringNum)}`;
+        let newArray = arrayNum.slice(0, arrayNum.length-1)
+        const stringNum = newArray.join(""); 
+        calculator.displayValue = `${stringNum}`;
+        calculator.firstOp = `${stringNum}`;
         displayNum();
         }
     };
