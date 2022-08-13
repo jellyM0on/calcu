@@ -21,7 +21,7 @@ function divideNum(a, b) {
 function operate(num1, num2, operation) {
     switch(operation){
         case "add": 
-            return addNum(num1 + num2); 
+            return addNum(num1, num2); 
         case "sub":
             return subtractNum(num1,num2); 
         case "times": 
@@ -29,7 +29,7 @@ function operate(num1, num2, operation) {
         case "divi": 
             return divideNum(num1,num2); 
     }
-    return num2;
+    return num2; 
 }
 
 //make grids: 
@@ -60,7 +60,6 @@ const additionalFeatures = ["C", "+/-", "%"];
 const addFeatID = ["clear", "sign", "percent"]; 
 const numbers = [9, 8, 7, 6, 5, 4, 3, 2, 1, 0, "."];
 
-
 function makeOperationGrids() {
     for (i = 0; i <= 4; i++) {
         makeGrids(operatorSection, "opGrids", operatorID, operators);
@@ -90,15 +89,19 @@ function makeAllGrids() {
 //
 
 const calculator = {
-    displayValue: "0", 
-    firstOp: null, 
-    waitingForSecondOp: false, 
-    operator: null, 
+    displayValue: "0",
+    firstOp: null,
+    waitingForSecondOp: false,
+    operator: null
 }
 
 function displayNum() {
     const display = document.querySelector(".display");
+    if (calculator.displayValue == "Infinity") {
+        display.value = "¯\\_(ツ)_/¯"; 
+    } else {
     display.value = calculator.displayValue;
+    }
 }
 
 function inputNum(num) {
@@ -120,17 +123,27 @@ function inputDec(point) {
 function handleOp(nextOp) {
     const { firstOp, displayValue, operator } = calculator;
     const inputValue = parseFloat(displayValue); 
-    if (firstOp == null && !isNaN(inputValue)) {
+    if (operator && calculator.waitingForSecondOp) {
+       calculator.operator = nextOp;
+       return;
+    } if (firstOp === null && !isNaN(inputValue)) {
         calculator.firstOp = inputValue; 
     } else if (operator) {
         const result = operate(firstOp, inputValue, operator);
-        calculator.displayValue = String(result); 
+        calculator.displayValue = `${parseFloat(result.toFixed(5))}`; 
         calculator.firstOp = result; 
     }
     calculator.waitingForSecondOp = true; 
     calculator.operator = nextOp; 
     console.log(calculator);
 }
+
+function resetCalc() {
+     calculator.displayValue = "0";
+     calculator.firstOp = null;
+     calculator.operator = null;
+    calculator.waitingForSecondOp = false;
+ }
 
 //function to start calc:
 function startCalc() {
@@ -143,33 +156,85 @@ startCalc();
 const numButtons = document.querySelectorAll("button");
 numButtons.forEach((button) => { 
     button.addEventListener("click", (event) => {
-    const { target } = event; 
-    if (target.id == ".") {
-        inputDec(target.id); 
+        const { target } = event; 
+        if (target.id == ".") {
+            inputDec(target.id); 
+            displayNum(); 
+            return; 
+        } 
+        if (target.classList.contains("opGrids")) {
+            handleOp(target.id); 
+            displayNum(); 
+            return;
+        } 
+        if (target.id == "clear") {
+            resetCalc();
+            displayNum();
+            return;
+        }
+        //if (target.id == "percent") {
+
+        //}
+        inputNum(target.id);
         displayNum(); 
-        return; 
-    }
-    if (target.classList.contains("opGrids")) {
-        handleOp(target.id); 
-        displayNum(); 
-        return;
-    }
-    inputNum(target.id);
-    displayNum(); 
-    })
+        });
 }); 
 
-// const opButtons = document.querySelectorAll(".opGrids");
-// opButtons.forEach((button) => {
-//     button.addEventListener("click", (event) => {
-//     const { target } = event; 
-//     handleOp(target.id); 
-//     displayNum(); 
-//     })
-// });
+window.addEventListener("keydown", (event) => {
+    if (event.keyCode == 8) {
+        console.log("..");
+        if (calculator.displayValue < 10 ) {
+            calculator.displayValue = "0"; 
+            displayNum();
+        } else {
+        let arrayNum = String(calculator.displayValue).split("");
+        arrayNum.pop(); 
+        const stringNum = arrayNum.join(""); 
+        calculator.displayValue = `${parseFloat(stringNum)}`;
+        calculator.firstOp = `${parseFloat(stringNum)}`;
+        displayNum();
+        }
+    };
+    switch (event.keyCode) {
+        case (48): 
+            keyFunctions(0);
+            break;
+        case (49):
+            keyFunctions(1);
+            break;
+        case (50):
+            keyFunctions(2);
+            break;    
+        case (51):
+            keyFunctions(3);
+            break;
+        case (52):
+            keyFunctions(4);
+            break;
+        case (53):
+            keyFunctions(5);
+            break;
+        case (54):
+            keyFunctions(6);
+            break;
+        case (55):
+            keyFunctions(7);
+            break;
+        case (56):
+            keyFunctions(8);
+            break;
+        case (57):
+            keyFunctions(9);
+            break;
+      };
+});
 
 
-// const opButton = document.querySelector("#equals"); 
-// opButton.addEventListener("click", () => { operate()})
+function keyFunctions(num) {
+    inputNum(String(num));
+    displayNum();
+}
+
+
 
 
